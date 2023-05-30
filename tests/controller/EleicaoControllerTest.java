@@ -18,7 +18,7 @@ public class EleicaoControllerTest {
     private Candidato candidato3;
 
     @org.junit.Before
-    public void setUp() throws Exception {
+    public void setUp() {
         ArrayList<Candidato> candidatos = new ArrayList<>();
 
         Partido partido1 = new Partido("PCdoB", 51);
