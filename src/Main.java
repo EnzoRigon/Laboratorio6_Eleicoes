@@ -27,6 +27,6 @@ public class Main {
         EleicaoController eleicaoController = new EleicaoController(eleicao);
 
         UrnaEletronica urna = new UrnaEletronica(eleicaoController);
-        urna.exibirMenu();
+        urna.iniciar();
     }
 }

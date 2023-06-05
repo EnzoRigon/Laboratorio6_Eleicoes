@@ -8,61 +8,42 @@ import java.util.Scanner;
 
 public class UrnaEletronica {
     private EleicaoController eleicaoController;
+    private static final int OP_VOTAR = 1;
+    private static final int OP_MAIS_JOVEM = 2;
+    private static final int OP_MAIS_VELHO = 3;
+    private static final int OP_MAIS_VOTADO = 4;
+    private static final int OP_MENOS_VOTADO = 5;
+    private static final int OP_TOTAL_VOTOS = 6;
+    private static final int OP_MEDIA_VOTOS = 7;
+    private static final int OP_SAIR = 0;
+    private static final int OP_INVALIDA = -1;
+    private static Scanner scanner;
 
     public UrnaEletronica(EleicaoController eleicaoController) {
         this.eleicaoController = eleicaoController;
     }
 
-
-    public void exibirMenu() {
-        Scanner scanner = new Scanner(System.in);
+    public void iniciar(){
+        scanner = new Scanner(System.in);
         int opcao;
-
         do {
             exibirMenuPrincipal();
-            System.out.print("Digite a opção desejada: ");
+            opcao = aceitaOperacao();
+            executaOperacao(opcao);
+        } while (opcao != OP_SAIR);
+    }
 
-            try {
-                opcao = scanner.nextInt();
-                System.out.println();
-
-                switch (opcao) {
-                    case 1:
-                        votar();
-                        break;
-                    case 2:
-                        exibirCandidatoMaisJovem();
-                        break;
-                    case 3:
-                        exibirCandidatoMaisVelho();
-                        break;
-                    case 4:
-                        exibirCandidatoMaisVotado();
-                        break;
-                    case 5:
-                        exibirCandidatoMenosVotado();
-                        break;
-                    case 6:
-                        exibirTotalVotos();
-                        break;
-                    case 7:
-                        exibirMediaVotacao();
-                        break;
-                    case 0:
-                        System.out.println("Encerrando a urna eletrônica...");
-                        break;
-                    default:
-                        System.out.println("Opção inválida! Por favor, tente novamente.");
-                        break;
-                }
-
-                System.out.println();
-            } catch (InputMismatchException ex) {
-                System.out.println("Digite um valor válido!");
-                scanner.next();
-                opcao = -1;
-            }
-        } while (opcao != 0);
+    public void executaOperacao(int opcao) {
+        switch (opcao) {
+            case OP_VOTAR -> votar();
+            case OP_MAIS_JOVEM -> exibirCandidatoMaisJovem();
+            case OP_MAIS_VELHO -> exibirCandidatoMaisVelho();
+            case OP_MAIS_VOTADO -> exibirCandidatoMaisVotado();
+            case OP_MENOS_VOTADO -> exibirCandidatoMenosVotado();
+            case OP_TOTAL_VOTOS -> exibirTotalVotos();
+            case OP_MEDIA_VOTOS -> exibirMediaVotacao();
+            case OP_SAIR -> System.out.println("Encerrando a urna eletrônica...");
+        }
     }
     private void exibirMenuPrincipal() {
         System.out.println("---- Urna Eletrônica ----");
@@ -90,6 +71,23 @@ public class UrnaEletronica {
         }
 
         System.out.println("|_______________________________|");
+    }
+
+    private static int aceitaOperacao() {
+        int opcao;
+        do {
+            try {
+                System.out.print("Digite a opção desejada: ");
+                opcao = scanner.nextInt();
+                scanner.nextLine();
+            } catch (InputMismatchException e) {
+                System.out.println("Digite um valor válido!");
+                scanner.next();
+                opcao = OP_INVALIDA;
+            }
+        } while (opcao == OP_INVALIDA);
+
+        return opcao;
     }
 
     private void votar() {
